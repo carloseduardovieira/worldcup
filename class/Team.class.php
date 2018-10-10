@@ -25,9 +25,13 @@ class Team{
         try { 
             $this->conn->beginTransaction(); 
             $stmt->execute( $aParams );         
-            $lastInsert = $this->conn->lastInsertId(); 
-            $this->conn->commit(); 
-            return $lastInsert;
+            $iIdLastInsert = $this->conn->lastInsertId(); 
+            if($iIdLastInsert !== 0){
+                $this->conn->commit(); 
+                return $iIdLastInsert;    
+            }
+            $this->conn->rollback();
+            return 0;
         } catch(PDOExecption $e) { 
             $this->conn->rollback(); 
             return "Error!: " . $e->getMessage() . "</br>"; 

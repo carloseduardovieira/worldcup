@@ -16,7 +16,7 @@ class Match {
  }
  
  public function Create( $oMatch ){
-    if( !$oMatch->idHomeTeam || !$oMatch->idVisitingTeam || !$oMatch->matchTime ) die('some value not found');
+    if( !$oMatch || !$oMatch->idHomeTeam || !$oMatch->idVisitingTeam || !$oMatch->matchTime ) die('some value not found');
 
     $dDateReceived = DateTime::createFromFormat('Y-m-d H:i', $oMatch->matchTime);
     if(!($dDateReceived && $dDateReceived->format('Y-m-d H:i') === $oMatch->matchTime)){
@@ -27,19 +27,25 @@ class Match {
     $this->idHomeTeam = (int) htmlspecialchars(strip_tags($oMatch->idHomeTeam));
     $this->idVisitingTeam = (int) htmlspecialchars(strip_tags($oMatch->idVisitingTeam));
     $iIdMatch = '';
+    if($this->idHomeTeam === $this->idVisitingTeam) die('Error! Teams equal');
     
     $sQuery = "INSERT INTO matches (idHomeTeam, idVisitingTeam, matchTime) VALUES(?,?,?)";
     $aParams = array($this->idHomeTeam, $this->idVisitingTeam, $this->matchTime);
-    $stmt = $this->conn->prepare( $sQuery );
-    try { 
+    
+    try {
         $this->conn->beginTransaction(); 
+        $stmt = $this->conn->prepare( $sQuery ); 
         $stmt->execute( $aParams );         
-        $lastInsert = $this->conn->lastInsertId(); 
-        $this->conn->commit(); 
-        return $lastInsert;
+        $iIdLastInsert = $this->conn->lastInsertId(); 
+        if($iIdLastInsert !== 0){
+            $this->conn->commit(); 
+            return $iIdLastInsert;    
+        }
+        $this->conn->rollback();
+        return 0;
     } catch(PDOExecption $e) { 
-        $this->conn->rollback(); 
-        return $this->conn->errorInfo();
+        $this->conn->rollback();         
+        return 0;
     }
 }
 
