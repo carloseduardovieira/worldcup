@@ -26,7 +26,7 @@ class Match {
     $this->matchTime = date('Y-m-d H:i', strtotime($oMatch->matchTime));
     $this->idHomeTeam = (int) htmlspecialchars(strip_tags($oMatch->idHomeTeam));
     $this->idVisitingTeam = (int) htmlspecialchars(strip_tags($oMatch->idVisitingTeam));
-    $iIdMatch = '';
+    
     if($this->idHomeTeam === $this->idVisitingTeam) die('Error! Teams equal');
     
     $sQuery = "INSERT INTO matches (idHomeTeam, idVisitingTeam, matchTime) VALUES(?,?,?)";
