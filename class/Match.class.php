@@ -16,7 +16,7 @@ class Match {
  }
  
  public function Create( $oMatch ){
-    if( !$oMatch || !$oMatch->idHomeTeam || !$oMatch->idVisitingTeam || !$oMatch->matchTime ) die('some value not found');
+    if( !$oMatch || empty($oMatch->idHomeTeam) || empty($oMatch->idVisitingTeam) || empty($oMatch->matchTime) ) die('some value not found');
 
     $dDateReceived = DateTime::createFromFormat('Y-m-d H:i', $oMatch->matchTime);
     if(!($dDateReceived && $dDateReceived->format('Y-m-d H:i') === $oMatch->matchTime)){
