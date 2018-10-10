@@ -13,26 +13,39 @@ class Team{
     }
 
     public function Create( $oTeam ) {
-        if( !$oTeam->name || !$oTeam->image ) die('some value not found');
-        $sQuery = "INSERT INTO teams SET name=:name, image=:image";
+        if( !$oTeam->name || !$oTeam->image ) die('some value not found');              
     
-        $stmt = $this->conn->prepare( $sQuery );
         $this->name = htmlspecialchars(strip_tags($oTeam->name));
         $this->image = htmlspecialchars(strip_tags($oTeam->image));
         
-        $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":image", $this->image);
-    
-        // execute query
-        if($stmt->execute()){
-            return true;
+        $sQuery = "INSERT INTO teams (name, image) VALUES(?,?)";
+        $aParams = array($this->name,$this->image);
+
+        $stmt = $this->conn->prepare( $sQuery );
+        try { 
+            $this->conn->beginTransaction(); 
+            $stmt->execute( $aParams );         
+            $lastInsert = $this->conn->lastInsertId(); 
+            $this->conn->commit(); 
+            return $lastInsert;
+        } catch(PDOExecption $e) { 
+            $this->conn->rollback(); 
+            return "Error!: " . $e->getMessage() . "</br>"; 
         }
-    
-        return false;
     }
 
-    public function FindTeamMatches( $sName ) {
-
+    public function FindTeamMatches( $iIdTeam ) {
+        $sQuery = "
+        ";
+        $this->id = (int) $iIdTeam;
+        $aParams = array($this->id);
+        try {                 
+            $stmt = $this->conn->prepare( $sQuery );                    
+            $stmt->execute($aParams);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOExecption $e) { 
+            return $this->conn->errorInfo();
+        }  
     }
     
 }

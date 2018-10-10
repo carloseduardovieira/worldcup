@@ -46,9 +46,10 @@
                 $oMatch->Create( $oJsonReceived );
                 break;
             case "find-team":
-                echo "find-team";
+                if($_SERVER['REQUEST_METHOD'] !== 'GET') die('Error method of sending invalid!');   
                 $oMatch = new Team( $oDB );
-                $oMatch->FindTeamMatches( $oJsonReceived );                
+                $oMatches = $oMatch->FindTeamMatches( $routes[1] );                
+                echo json_encode( $oMatches );
                 break;
             case "add-match":
                 echo "add-match";
@@ -56,10 +57,11 @@
                 $a = $oMatch->Create( $oJsonReceived );                
                 echo $a;
                 break;            
-            case "find-match-day":
-                echo "find-match-day";
+            case "find-match-day":                               
+                if($_SERVER['REQUEST_METHOD'] !== 'GET') die('Error method of sending invalid!');                            
                 $oMatch = new Match( $oDB );
-                $oMatch->FindMatchByDay( $oJsonReceived );
+                $oMatches = $oMatch->FindMatchesByDay( $routes[1] );
+                echo json_encode( $oMatches );
                 break;
         }
 
