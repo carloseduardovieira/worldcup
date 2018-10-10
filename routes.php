@@ -41,9 +41,9 @@
 
         switch ( $routes[0] ) {
             case "add-team":
-                echo "add-team";
+                echo "add-team ";
                 $oMatch = new Team( $oDB );
-                $oMatch->Create( $oJsonReceived );
+                echo $oMatch->Create( $oJsonReceived );
                 break;
             case "find-team":
                 if($_SERVER['REQUEST_METHOD'] !== 'GET') die('Error method of sending invalid!');   
@@ -54,8 +54,9 @@
             case "add-match":
                 echo "add-match";
                 $oMatch = new Match( $oDB );
-                $a = $oMatch->Create( $oJsonReceived );                
-                echo $a;
+                $idRecord = $oMatch->Create( $oJsonReceived );                
+                if($idRecord == 0) die('Error! Check that both teams exist.');
+                echo $idRecord;
                 break;            
             case "find-match-day":                               
                 if($_SERVER['REQUEST_METHOD'] !== 'GET') die('Error method of sending invalid!');                            

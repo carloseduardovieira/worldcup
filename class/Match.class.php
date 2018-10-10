@@ -27,22 +27,9 @@ class Match {
     $this->idHomeTeam = (int) htmlspecialchars(strip_tags($oMatch->idHomeTeam));
     $this->idVisitingTeam = (int) htmlspecialchars(strip_tags($oMatch->idVisitingTeam));
     $iIdMatch = '';
-
-    $sQuery = "INSERT INTO matches (matchTime) VALUES(?)";
-    $aParams = array($this->matchTime);
-    $iIdMatch = $this->Insert($sQuery, $aParams);
     
-    if(!is_numeric($iIdMatch)) die( $iIdMatch );
-
-    $sQuery = "INSERT INTO teams_has_matches (teams_id, matches_id) VALUES(?,?)";
-    $aParams = array($this->idHomeTeam, $iIdMatch);
-    $this->Insert($sQuery, $aParams);
-    
-    $aParams = array($this->idVisitingTeam, $iIdMatch);
-    $this->Insert($sQuery, $aParams);
-}
-
- public function Insert($sQuery, $aParams = []){
+    $sQuery = "INSERT INTO matches (idHomeTeam, idVisitingTeam, matchTime) VALUES(?,?,?)";
+    $aParams = array($this->idHomeTeam, $this->idVisitingTeam, $this->matchTime);
     $stmt = $this->conn->prepare( $sQuery );
     try { 
         $this->conn->beginTransaction(); 
@@ -52,9 +39,9 @@ class Match {
         return $lastInsert;
     } catch(PDOExecption $e) { 
         $this->conn->rollback(); 
-        return "Error!: " . $e->getMessage() . "</br>"; 
+        return $this->conn->errorInfo();
     }
- }
+}
 
  public function FindMatchesByDay( $dMatch ) {
     
@@ -65,9 +52,13 @@ class Match {
 
     $this->matchTime = date('Y-m-d', strtotime($dMatch));
     
-    $sQuery = "      
-    ";
-    
+    $sQuery = "SELECT 
+        m.id as idPartida, t.id as idHomeTeam, t.name as homeTeam, 
+        t.image as imgHomeTeam, t2.id as idVisitingTeam, t2.name as visitingTeam, 
+        t2.image as imgVisitingTeam, m.matchTime 
+        FROM matches m JOIN teams as t ON t.id = m.idHomeTeam
+        JOIN teams t2 ON t2.id = m.idVisitingTeam
+        WHERE matchTime LIKE '%".$this->matchTime."%'";    
     try {                 
         $stmt = $this->conn->query( $sQuery );        
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -35,10 +35,16 @@ class Team{
     }
 
     public function FindTeamMatches( $iIdTeam ) {
-        $sQuery = "
+        $sQuery = "SELECT 
+            m.id as idPartida, t.id as idHomeTeam, t.name as homeTeam,
+            t.image as imgHomeTeam, t2.id as idVisitingTeam, t2.name as visitingTeam, 
+            t2.image as imgVisitingTeam, m.matchTime 
+            FROM matches m JOIN teams as t ON t.id = m.idHomeTeam
+            JOIN teams t2 ON t2.id = m.idVisitingTeam
+            WHERE idHomeTeam = ? OR idVisitingTeam = ? 
         ";
         $this->id = (int) $iIdTeam;
-        $aParams = array($this->id);
+        $aParams = array($this->id, $this->id);
         try {                 
             $stmt = $this->conn->prepare( $sQuery );                    
             $stmt->execute($aParams);
