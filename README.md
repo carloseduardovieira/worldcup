@@ -2,12 +2,13 @@
 
 Primeiro de tudo, verifique se você instalou e ativou o módulo de rewrite na configuração do Apache.
 
-Após isso o arquivo .htaccess no diretório principal da aplicação irá ativae o mecanismo de reescrita.
+Após isso, o arquivo .htaccess no diretório principal da aplicação irá ativar o mecanismo de reescrita.
 Em seguida, trataremos de todas as solicitações que não correspondem aos nomes dos arquivos. 
-Depois disso, passaremos os pedidos para o arquivo route.php. Agora, route.php irá gerenciar todos os pedidos.
+Assim, será passado os pedidos para o arquivo routes.php. Agora, routes.php que gerenciará todos os pedidos.
 
 A aplicação worldcup está preparada para receber e retornar arquivos .json, adiante descreve-se os comando para executar o REST.
-Sugere-se a utilização do aplicativo Postman, para realizar as requisições.
+
+Sugere-se a utilização do aplicativo Postman <https://www.getpostman.com/>, para realizar as requisições.
 
 ## Adicionar uma nova equipe - POST method
 
