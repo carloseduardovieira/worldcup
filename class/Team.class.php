@@ -15,7 +15,7 @@ class Team{
     public function Create( $oTeam ) {
         if(!$oTeam || empty($oTeam->name) || empty($oTeam->image) ) die('some value not found');              
     
-        $this->name = htmlspecialchars(strip_tags($oTeam->name));
+        $this->name = htmlspecialchars_decode(strip_tags($oTeam->name));
         $this->image = htmlspecialchars(strip_tags($oTeam->image));
         
         $sQuery = "INSERT INTO teams (name, image) VALUES(?,?)";
