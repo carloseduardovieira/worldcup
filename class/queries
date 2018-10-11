@@ -1,3 +1,14 @@
+----- create table teams
+
+
+CREATE TABLE IF NOT EXISTS `teams` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+
 ----- create table matches
 
 CREATE TABLE IF NOT EXISTS `matches` (
@@ -10,16 +21,4 @@ CREATE TABLE IF NOT EXISTS `matches` (
   ON DELETE CASCADE,  
   FOREIGN KEY (`idVisitingTeam`) REFERENCES teams(`id`)
   ON DELETE CASCADE  
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-
-
------ create table teams
-
-
-CREATE TABLE IF NOT EXISTS `teams` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `image` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
