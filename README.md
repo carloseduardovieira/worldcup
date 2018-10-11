@@ -11,7 +11,7 @@ Sugere-se a utilização do aplicativo Postman, para realizar as requisições.
 
 ## Adicionar uma nova equipe - POST method
 
-URI: http://localhost/worldcup/add-team
+URI: http://52.67.82.231/worldcup/add-team
 Objeto de a ser enviado como POST:
 ```sh
 {
@@ -24,7 +24,7 @@ Obs: a requisição deve enviar no cabeçalho Content-Type = application/json
 
 ## Adicionar um novo jogo - POST method
 
-URI: http://localhost/worldcup/add-match
+URI: http://52.67.82.231/worldcup/add-match
 Objeto de a ser enviado como POST:
 ```sh
 {
@@ -39,13 +39,13 @@ Obs: a requisição deve enviar no cabeçalho Content-Type = application/json
 
 ## Procurar todos os jogos de uma equipe - GET method
 
-URI: http://localhost/worldcup/find-team/1
+URI: http://52.67.82.231/worldcup/find-team/1
 
 Obs: o id do time requisitado deve estar logo após a primeira barra após o nome do metodo
 
 ## Procurar por todos os jogos em um determinado dia - GET method
 
-URI: http://localhost/worldcup/find-match-day/2018-10-09
+URI: http://52.67.82.231/worldcup/find-match-day/2018-10-09
 
 Obs: o data requisitada deve estar logo após a primeira barra após o nome do metodo, e o formato deve ser yyyy-mm-dd
 
